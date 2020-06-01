@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, shrink-to-fit=no">
+<title>Sumonar Fest</title>
+<style>
+    html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000;
+	font-family:calibri;
+    }
+
+    a:link, a:visited{
+    color: #bdc3c7;
+    }
+
+    .credit{
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    padding: 20px 0;
+    color: #fff;
+    }
+
+    #example-container {
+    max-width: 500px;
+    max-height: 500px;
+    min-width: 200px;
+    min-height: 250px;
+    background: #fff;
+    color: #000;
+    border-radius: 3px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+	padding:10px;
+    }
+
+    #example-container > iframe {
+    border: none;
+    width:100%;
+    }
+
+    .title {
+    font-size: 1.5em;
+    text-align: center;
+    padding: 5px;
+    }
+
+    .text {
+   text-align:center;
+    }
+</style>
+</head>
+
+<body>
+<div style="position:fixed; padding:15px; z-index:9">
+	<img src="logo.png" style="max-width:100%;">
+</div>
+
+<div id="example-container" style="display:none">
+    <img src="sumonar.jpg" style="width:100%;">
+    <div class="title">SUMMONAR FEST</div>
+    <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+</div>
+
+<script src="./Panorama/three.min.js.download"></script>
+<script src="./Panorama/panolens.min.js.download"></script>
+
+<script>
+
+    var panorama_center_floor = [];
+    var panorama_back_area = [];
+    var panorama_tiny = [];
+    var viewer;
+
+    /****************************
+    *   Center floor panorama.   
+    ****************************/
+    panorama_center_floor['panorama'] = new PANOLENS.ImagePanorama( 'building.jpg' );
+    panorama_center_floor['infospots'] = [
+        new PANOLENS.Infospot( 300, PANOLENS.DataImage.Arrow ),
+        new PANOLENS.Infospot( 400, PANOLENS.DataImage.Info ),
+        new PANOLENS.Infospot( 300, "logo-LEKEN.png" ),
+		  new PANOLENS.Infospot( 200, PANOLENS.DataImage.Arrow )
+    ];
+
+        // Set our details for the various infospots.
+        panorama_center_floor['infospots'][0].position.set( 8000, -150, 634.87 );
+        panorama_center_floor['infospots'][0].addHoverText( "Explore Underground" );
+        panorama_center_floor['infospots'][0].addEventListener( 'click', function(){
+            viewer.setPanorama( panorama_back_area['panorama'] );
+        });
+
+        // Infospot with text.
+        panorama_center_floor['infospots'][1].position.set( 4682, -1200, 1721 );
+        panorama_center_floor['infospots'][1].addHoverElement( document.getElementById( 'example-container' ), 200 );
+		
+		  // Infospot with text.
+        panorama_center_floor['infospots'][2].position.set( 3350, 497, 3695 );
+		panorama_center_floor['infospots'][2].addEventListener( 'click', function(){
+			 window.open('http://lepaskendalilabs.com', '_blank');
+        });
+		
+       
+		 // Set our details for the various infospots.
+        panorama_center_floor['infospots'][3].position.set( 4325, 1560, 1903 );
+        panorama_center_floor['infospots'][3].addHoverText( "Explore Room" );
+        panorama_center_floor['infospots'][3].addEventListener( 'click', function(){
+            viewer.setPanorama( panorama_tiny['panorama'] );
+        });
+
+		 // Load all of our infospots into the panorama.
+        panorama_center_floor['infospots'].forEach(function(element) {
+            panorama_center_floor['panorama'].add(element);
+        });
+		
+
+    /*************************
+    *   Back area panorama.   
+    *************************/
+    panorama_back_area['panorama'] = new PANOLENS.ImagePanorama( 'tunnel.jpg' );
+    panorama_back_area['infospots'] = [
+        new PANOLENS.Infospot( 300, PANOLENS.DataImage.Arrow )
+    ]
+
+        // Set our details for the various infospots.
+        panorama_back_area['infospots'][0].position.set( 4393, 107, 2481);
+        panorama_back_area['infospots'][0].addHoverText( "Back to Home" );
+        panorama_back_area['infospots'][0].addEventListener( 'click', function(){
+            viewer.setPanorama( panorama_center_floor['panorama'] );
+        });
+
+        // Load all of our infospots into the panorama.
+        panorama_back_area['infospots'].forEach(function(element) {
+            panorama_back_area['panorama'].add(element);
+        });
+		
+	 /*************************
+    *   Back area panorama Tiny.   
+    *************************/
+    panorama_tiny['panorama'] = new PANOLENS.ImagePanorama( 'cabin.jpg' );
+    panorama_tiny['infospots'] = [
+        new PANOLENS.Infospot( 300, PANOLENS.DataImage.Arrow )
+    ]
+
+        // Set our details for the various infospots.
+        panorama_tiny['infospots'][0].position.set( 3279, 107, 3762);
+        panorama_tiny['infospots'][0].addHoverText( "Back to Home" );
+        panorama_tiny['infospots'][0].addEventListener( 'click', function(){
+            viewer.setPanorama( panorama_center_floor['panorama'] );
+        });
+
+        // Load all of our infospots into the panorama.
+        panorama_tiny['infospots'].forEach(function(element) {
+            panorama_tiny['panorama'].add(element);
+        });
+
+    // Add our panorama to the page.
+    viewer = new PANOLENS.Viewer({
+        autoHideInfospot: false,
+        output: 'overlay'
+    });
+	
+    viewer.add( panorama_center_floor['panorama'], panorama_back_area['panorama'] , panorama_tiny['panorama'] );
+
+    // Set our default viewer position.
+    // To rotate modify the X in "X * Math.PI / 180".
+    viewer.getControl().rotateLeft( -110 * Math.PI / 180 );
+    viewer.getControl().update();
+</script>
+
+</body></html>
